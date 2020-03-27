@@ -6,7 +6,8 @@ const Users = require('../database/users-model');
 
 router.post('/register', (req, res) => {
   // implement registration
-  const userInfo = req.body;
+  if (req.body.username && req.body.password) {
+    const userInfo = req.body;
 
   const ROUNDS = process.env.ROUNDS || 8;
   const hash = bcrypt.hashSync(userInfo.password, ROUNDS);
@@ -20,6 +21,9 @@ router.post('/register', (req, res) => {
     .catch(err => {
       res.status(500).json({errorMessage: 'could not add user to database'})
     });
+  } else {
+    res.status(401).json({message: 'Please provide both a username and password'})
+  }  
 });
 
 router.post('/login', (req, res) => {
