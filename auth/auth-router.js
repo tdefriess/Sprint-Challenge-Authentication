@@ -28,12 +28,12 @@ router.post('/login', (req, res) => {
 
   Users.findBy({ username })
     .then(([user]) => {
-      console.log('user', user)
+
       if (user && bcrypt.compareSync(password, user.password)) {
-        // req.session.user = {
-        //   id: user.id,
-        //   username: user.username
-        // }
+        req.session.user = {
+          id: user.id,
+          username: user.username
+        }
 
         res.status(200).json({user})
       } else {
